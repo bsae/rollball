@@ -14,6 +14,9 @@ class ROLLBALL_API ASpikeTrap : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASpikeTrap();
+	//*beto*
+	UPROPERTY()
+	UStaticMeshComponent* VisualMesh;
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,6 +28,3 @@ public:
 
 };
 
-//*beto*
-UPROPERTY()
-class UParticleSystemComponent* OurParticleSystem;
