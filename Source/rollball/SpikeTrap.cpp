@@ -6,7 +6,7 @@
 // *beto* additional header files for shapes and meshes needed
 #include "UObject/ConstructorHelpers.h"
 #include "Particles/ParticleSystemComponent.h"
-#include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 
 // Sets default values
@@ -16,8 +16,10 @@ ASpikeTrap::ASpikeTrap()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// *beto* the constructor (how to initialize itself)
+	// create the mesh object which is the root of the class
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	VisualMesh->SetupAttachment(RootComponent);
+	//VisualMesh->SetupAttachment(RootComponent);
+	RootComponent = VisualMesh;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube"));
 
@@ -25,6 +27,14 @@ ASpikeTrap::ASpikeTrap()
 		VisualMesh->SetStaticMesh(CubeVisualAsset.Object);
 		VisualMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	}
+
+	// *beto* create the collision box
+	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(FName("Collision Mesh"));
+	// CollisionMesh->BoxExtent(FVector(1.0f, 1.0f, 1.0f)); // caused an error : boxextent takes more than 1 argument?
+	
+	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &ASpikeTrap::OnOverlapBegin);
+	CollisionMesh->OnComponentEndOverlap.AddDynamic(this, &ASpikeTrap::OnOverlapEnd);
+	CollisionMesh->SetupAttachment(RootComponent); // connects the collision mesh to the visual mesh
 
 }
 
