@@ -20,6 +20,7 @@ ASpikeTrap::ASpikeTrap()
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	//VisualMesh->SetupAttachment(RootComponent);
 	RootComponent = VisualMesh;
+	//bool isOverlapped = false;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube"));
 
@@ -54,10 +55,26 @@ void ASpikeTrap::Tick(float DeltaTime)
 	FVector NewLocation = GetActorLocation();
 	FRotator NewRotation = GetActorRotation();
 	float RunningTime = GetGameTimeSinceCreation();
+
+	// if it is overlapped, speed up the rotation
 	float DeltaHeight = (FMath::Sin(RunningTime + DeltaTime) - FMath::Sin(RunningTime));
-	NewLocation.Z += DeltaHeight * 20.0f; //scales the height by a factor of 20.0
-	float DeltaRotation = DeltaTime * 20.f; //rotate by 20 degrees per second
-	NewRotation.Yaw += DeltaRotation;
+	float DeltaRotation = DeltaTime;
+	if(this->isOverlapped == true){
+		//float DeltaHeight = (FMath::Sin(RunningTime + DeltaTime) - FMath::Sin(RunningTime));
+		NewLocation.Z += DeltaHeight * 20.0f; //scales the height by a factor of 20.0
+		//float DeltaRotation = DeltaTime * 5.0f; //rotate by 40 degrees per second
+		NewRotation.Yaw += DeltaRotation * 5.0f;
+	}else{
+		//float DeltaHeight = (FMath::Sin(RunningTime + DeltaTime) - FMath::Sin(RunningTime));
+		NewLocation.Z += DeltaHeight * 20.0f; //scales the height by a factor of 20.0
+		//float DeltaRotation = DeltaTime * 30.0f; //rotate by 20 degrees per second
+		NewRotation.Yaw += DeltaRotation * 30.f;
+	};
+
+	// float DeltaHeight = (FMath::Sin(RunningTime + DeltaTime) - FMath::Sin(RunningTime));
+	// NewLocation.Z += DeltaHeight * 20.0f; //scales the height by a factor of 20.0
+	// float DeltaRotation = DeltaTime * 20.0f; //rotate by 20 degrees per second
+	// NewRotation.Yaw += DeltaRotation;
 
 	SetActorLocationAndRotation(NewLocation, NewRotation);
 

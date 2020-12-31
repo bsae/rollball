@@ -29,21 +29,25 @@ public:
 	UMaterial* MaterialColor1;
 	UPROPERTY(VisibleAnywhere)
 	UMaterial* MaterialColor2;
+	UPROPERTY(VisibleAnywhere)
+	bool isOverlapped = false;
 
 	//*beto* overlap between collision boxes functions (begin and end)
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
 		if (OtherActor && (OtherActor != this) && OtherComp) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
 			VisualMesh->SetMaterial(0, MaterialColor1);
+			this->isOverlapped=true;
 		}
 	};
 
 	UFUNCTION()
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 		if (OtherActor && (OtherActor != this) && OtherComp) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap End"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap End"));
 			VisualMesh->SetMaterial(0, MaterialColor2);
+			this->isOverlapped=false;
 		}
 	};
 
