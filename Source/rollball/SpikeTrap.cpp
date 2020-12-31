@@ -36,6 +36,8 @@ ASpikeTrap::ASpikeTrap()
 	CollisionMesh->OnComponentEndOverlap.AddDynamic(this, &ASpikeTrap::OnOverlapEnd);
 	CollisionMesh->SetupAttachment(RootComponent); // connects the collision mesh to the visual mesh
 
+	MaterialColor1 = CreateDefaultSubobject<UMaterial>(TEXT("Material 1"));
+	MaterialColor2 = CreateDefaultSubobject<UMaterial>(TEXT("Material 2"));
 }
 
 // Called when the game starts or when spawned

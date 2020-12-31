@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Materials/Material.h"
 
 #include "SpikeTrap.generated.h"
 
@@ -24,12 +25,17 @@ public:
 	UStaticMeshComponent* VisualMesh;
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* CollisionMesh = nullptr;
+	UPROPERTY(VisibleAnywhere)
+	UMaterial* MaterialColor1;
+	UPROPERTY(VisibleAnywhere)
+	UMaterial* MaterialColor2;
 
 	//*beto* overlap between collision boxes functions (begin and end)
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
 		if (OtherActor && (OtherActor != this) && OtherComp) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
+			VisualMesh->SetMaterial(0, MaterialColor1);
 		}
 	};
 
@@ -37,6 +43,7 @@ public:
 	void OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 		if (OtherActor && (OtherActor != this) && OtherComp) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap End"));
+			VisualMesh->SetMaterial(0, MaterialColor2);
 		}
 	};
 
