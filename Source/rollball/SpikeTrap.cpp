@@ -45,6 +45,7 @@ ASpikeTrap::ASpikeTrap()
 void ASpikeTrap::BeginPlay()
 {
 	Super::BeginPlay();
+	VisualMesh->SetMaterial(0, MaterialColor2);
 	
 }
 
